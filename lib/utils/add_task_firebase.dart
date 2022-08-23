@@ -21,6 +21,14 @@ Future <void> addTaskFromFireBase(TaskModel task){
 }
 
 
+Future<void> deleteTaskFromFireStore(TaskModel task){
+  var deletedTask =getTasksFromFirestore();
+  return deletedTask.doc(task.id).delete();
+}
+Future<void> updateTaskFromFireStore(TaskModel task){
+  var updateTask =getTasksFromFirestore();
+  return updateTask.doc(task.id).delete();
+}
 
 Future<QuerySnapshot<TaskModel>> getTaskFromFireBase(DateTime dateTime){
       var tasks= getTasksFromFirestore() ;

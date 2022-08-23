@@ -1,13 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 import 'package:to_do/models/task_model.dart';
+import 'package:to_do/shared/components/components.dart';
 import 'package:to_do/shared/styles/colors.dart';
 import 'package:to_do/shared/styles/my_theme.dart';
+import 'package:to_do/utils/add_task_firebase.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class TaskItem extends StatelessWidget {
+import '../../providers/my_provider.dart';
+
+class TaskItem extends StatefulWidget {
   TaskModel taskModel;
 
   TaskItem(this.taskModel);
+
+  @override
+  State<TaskItem> createState() => _TaskItemState();
+}
+
+class _TaskItemState extends State<TaskItem> {
+  late NavigatorState _navigator;
+
+  @override
+  void didChangeDependencies() {
+    _navigator = Navigator.of(context);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +37,26 @@ class TaskItem extends StatelessWidget {
         motion: BehindMotion(),
         children: [
           SlidableAction(
-            onPressed: (context) {},
-            label: 'Delete',
-            backgroundColor: Theme.of(context).colorScheme.error,
+            onPressed: (context) {
+              // showLoading(context, 'Loading...');
+
+              showMessage(
+                  context,
+                  '${AppLocalizations.of(context)!.are_you_sure_to_want_delete_this_task}',
+                  '${AppLocalizations.of(context)!.yes}',
+                  () {
+                    deleteTask();
+                    _navigator.pop();
+                  },
+                  NegActionName: '${AppLocalizations.of(context)!.cancel}',
+                  NagActionCallBack: () {
+                    _navigator.pop();
+                    hideLoadingDilog(context);
+                    _navigator.pop();
+                  });
+            },
+            label: '${AppLocalizations.of(context)!.delete}',
+            backgroundColor: Color(0xFFEC4B4B),
             icon: Icons.delete,
           ),
         ],
@@ -29,7 +65,7 @@ class TaskItem extends StatelessWidget {
         margin: EdgeInsets.all(12),
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).backgroundColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -47,11 +83,11 @@ class TaskItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  taskModel.title,
+                  widget.taskModel.title,
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
                 Text(
-                  taskModel.description,
+                  widget.taskModel.description,
                   style: Theme.of(context)
                       .textTheme
                       .headline2
@@ -60,18 +96,31 @@ class TaskItem extends StatelessWidget {
               ],
             )),
             Container(
-                decoration: BoxDecoration(
-                    color: Color(0xFF5D9CEC),
-                    borderRadius: BorderRadius.circular(12)),
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                child: Icon(
-                  Icons.check,
-                  color: Colors.white,
-                  size: 28,
-                )),
+              decoration: BoxDecoration(
+                  color: PrimaryColor, borderRadius: BorderRadius.circular(12)),
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              child: Icon(
+                Icons.check,
+                color: Colors.white,
+                size: 28,
+              ),
+            ),
+
           ],
         ),
       ),
     );
+  }
+
+  void deleteTask() {
+    deleteTaskFromFireStore(widget.taskModel).then((value) {
+      hideLoadingDilog(context);
+    }).catchError((e) {});
+  }
+
+  void updateTask() {
+    updateTaskFromFireStore(widget.taskModel).then((value) {
+      hideLoadingDilog(context);
+    }).catchError((e) {});
   }
 }

@@ -5,6 +5,7 @@ import 'package:to_do/models/task_model.dart';
 import 'package:to_do/modules/tasks/task_item.dart';
 import 'package:to_do/shared/styles/colors.dart';
 import 'package:to_do/utils/add_task_firebase.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TasksTab extends StatefulWidget {
   @override
@@ -31,10 +32,10 @@ class _TasksTabState extends State<TasksTab> {
               });
             },
             leftMargin: 20,
-            monthColor: Colors.black,
-            dayColor: Colors.black,
+            monthColor:Theme.of(context).textTheme.headline2?.color,
+            dayColor: Theme.of(context).textTheme.headline2?.color,
             activeDayColor: PrimaryColor,
-            activeBackgroundDayColor: whiteColor,
+            activeBackgroundDayColor: Theme.of(context).backgroundColor,
             dotsColor: PrimaryColor,
             selectableDayPredicate: (date) => true,
             locale: 'en',
