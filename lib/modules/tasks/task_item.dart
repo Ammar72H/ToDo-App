@@ -38,15 +38,16 @@ class _TaskItemState extends State<TaskItem> {
         children: [
           SlidableAction(
             onPressed: (context) {
-              // showLoading(context, 'Loading...');
 
               showMessage(
                   context,
                   '${AppLocalizations.of(context)!.are_you_sure_to_want_delete_this_task}',
                   '${AppLocalizations.of(context)!.yes}',
                   () {
+                    // _navigator.pop();
                     deleteTask();
-                    _navigator.pop();
+                    // _navigator.pop();
+
                   },
                   NegActionName: '${AppLocalizations.of(context)!.cancel}',
                   NagActionCallBack: () {
@@ -73,7 +74,8 @@ class _TaskItemState extends State<TaskItem> {
             Container(
               height: 50,
               width: 4,
-              color: PrimaryColor,
+              color:widget.taskModel.isDone! ? GreenColor
+              :PrimaryColor,
             ),
             SizedBox(
               width: 8,
@@ -84,28 +86,39 @@ class _TaskItemState extends State<TaskItem> {
               children: [
                 Text(
                   widget.taskModel.title,
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style:widget.taskModel.isDone!
+                      ?Theme.of(context) .textTheme .headline2 ?.copyWith(fontSize: 22,color: GreenColor)
+                      : Theme.of(context).textTheme.subtitle1,
                 ),
                 Text(
                   widget.taskModel.description,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline2
-                      ?.copyWith(fontSize: 15),
+                  style
+                      : Theme.of(context) .textTheme .headline2 ?.copyWith(fontSize: 15),
                 )
               ],
             )),
-            Container(
-              decoration: BoxDecoration(
-                  color: PrimaryColor, borderRadius: BorderRadius.circular(12)),
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-              child: Icon(
-                Icons.check,
-                color: Colors.white,
-                size: 28,
-              ),
-            ),
 
+            InkWell(
+              onTap: () {
+                updateTask();
+              },
+              child:
+              widget.taskModel.isDone!
+                  ? Text('${AppLocalizations.of(context)!.done}',
+                style: Theme.of(context).textTheme.headline2!.copyWith(color: GreenColor,fontWeight: FontWeight.bold),)
+                  :Container(
+                      decoration: BoxDecoration(
+                          color: PrimaryColor,
+                          borderRadius: BorderRadius.circular(12)),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                      child: Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 28,
+                      ),
+                    ),
+            ),
           ],
         ),
       ),
@@ -117,10 +130,7 @@ class _TaskItemState extends State<TaskItem> {
       hideLoadingDilog(context);
     }).catchError((e) {});
   }
-
   void updateTask() {
-    updateTaskFromFireStore(widget.taskModel).then((value) {
-      hideLoadingDilog(context);
-    }).catchError((e) {});
-  }
-}
+    updateTaskFromFireStore(widget.taskModel);
+
+}}

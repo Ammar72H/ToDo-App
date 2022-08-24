@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do/layout/home_layout.dart';
+import 'package:to_do/models/task_model.dart';
+import 'package:to_do/providers/tasks_provider.dart';
 import 'package:to_do/shared/styles/my_theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import '../../providers/my_provider.dart';
@@ -12,14 +14,18 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(ChangeNotifierProvider(
-      create: (context) {
-        return MyProviderApp();
-      },
-      child: MyApp()));
+  // FirebaseFirestore.instance.disableNetwork();
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => MyProviderApp(), child: MyApp()),
+      // ChangeNotifierProvider(create: (_) => TasksProvider(), child: MyApp()),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
+
   late MyProviderApp myProviderApp;
 
   @override

@@ -119,14 +119,16 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                             datetime: DateUtils.dateOnly(selectedDate).microsecondsSinceEpoch);
                         showLoading(context,'${AppLocalizations.of(context)!.loading}');
                         addTaskFromFireBase(tas).then((value) {
+
                           hideLoadingDilog(context);
-                          _navigator.pop(context);
+                          _navigator.pop();
                           showMessage(context,'${AppLocalizations.of(context)!.added_succssfully}',
-                              '${AppLocalizations.of(context)!.ok}',(){
-                                _navigator.pop(context);
-                          },
-                          );
+                            '${AppLocalizations.of(context)!.ok}',(){
+                              _navigator.pop(context);
+                              });
+                           _navigator.pop(context);
                         });
+                        // _navigator.pop();
 
                       }
                     },
@@ -143,7 +145,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
 
   }
 
-   OpenDataPicker() async {
+  OpenDataPicker() async {
     var choosenDate = await showDatePicker(
 
         context: context,

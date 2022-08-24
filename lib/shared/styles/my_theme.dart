@@ -18,7 +18,7 @@ class MyThemeData {
         )),
     backgroundColor: whiteColor,
     iconTheme: IconThemeData(
-      color: Colors.black,
+      color: Colors.white,
     ),
 
 
@@ -69,7 +69,7 @@ class MyThemeData {
           )),
       backgroundColor: Color(0xFF141922),
       iconTheme: IconThemeData(
-        color: whiteColor,
+        color: Colors.black,
       ),
 
       textTheme: TextTheme(
