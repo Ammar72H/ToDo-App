@@ -46,14 +46,15 @@ class _TaskItemState extends State<TaskItem> {
                   () {
                     // _navigator.pop();
                     deleteTask();
-                    // _navigator.pop();
+                    _navigator.pop();
+                    hideLoadingDilog(context);
 
                   },
                   NegActionName: '${AppLocalizations.of(context)!.cancel}',
                   NagActionCallBack: () {
                     _navigator.pop();
                     hideLoadingDilog(context);
-                    _navigator.pop();
+                    // _navigator.pop();
                   });
             },
             label: '${AppLocalizations.of(context)!.delete}',
