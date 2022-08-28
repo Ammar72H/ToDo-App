@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:to_do/modules/settings/settings.dart';
+
 import 'package:to_do/modules/tasks/tasks.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../modules/settings/setting.dart';
 import '../modules/tasks/add_task_bottom_sheet.dart';
 
 class HomeLayout extends StatefulWidget {

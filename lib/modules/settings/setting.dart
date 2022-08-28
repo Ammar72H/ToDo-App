@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:to_do/modules/settings/show_bottom_sheet_language.dart';
+import 'package:to_do/modules/settings/show_bottom_sheet_languages.dart';
 import 'package:to_do/modules/settings/show_bottom_sheet_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../providers/my_provider.dart';
@@ -33,7 +33,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Container(
                 padding: EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).backgroundColor,
+                    color: Theme.of(context).backgroundColor,
                     border: Border.all(color: Theme.of(context).primaryColor)),
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
